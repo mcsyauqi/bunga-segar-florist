@@ -1,13 +1,13 @@
 import Link from "next/link";
-import { Flower2, Instagram, Facebook, MapPin, Phone, Mail, Clock } from "lucide-react";
+import { Flower2, Instagram, Facebook, MapPin, Phone, Mail, Clock, MessageCircle } from "lucide-react";
 
 export default function Footer() {
   return (
     <footer className="bg-foreground text-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
           {/* Brand */}
-          <div className="space-y-4">
+          <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="flex items-center gap-2">
               <div className="p-2 rounded-full bg-primary/20">
                 <Flower2 className="h-8 w-8 text-primary" />
@@ -21,20 +21,32 @@ export default function Footer() {
             </Link>
             <p className="text-white/70 text-sm leading-relaxed">
               Ungkapkan Perasaan dengan Keindahan Bunga. Rangkaian bunga segar
-              berkualitas untuk setiap momen spesial Anda.
+              berkualitas untuk setiap momen spesial Anda. Melayani Jakarta dan sekitarnya dengan same-day delivery.
             </p>
             <div className="flex gap-3">
               <a
-                href="#"
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="p-2 bg-white/10 rounded-full hover:bg-primary/50 transition-colors"
               >
                 <Instagram className="h-5 w-5" />
               </a>
               <a
-                href="#"
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="p-2 bg-white/10 rounded-full hover:bg-primary/50 transition-colors"
               >
                 <Facebook className="h-5 w-5" />
+              </a>
+              <a
+                href="https://wa.me/6281234567890"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 bg-white/10 rounded-full hover:bg-primary/50 transition-colors"
+              >
+                <MessageCircle className="h-5 w-5" />
               </a>
             </div>
           </div>
@@ -42,15 +54,17 @@ export default function Footer() {
           {/* Quick Links */}
           <div>
             <h4 className="font-heading text-lg font-semibold mb-4">
-              Quick Links
+              Menu
             </h4>
             <ul className="space-y-3">
               {[
+                { name: "Beranda", href: "/" },
                 { name: "Koleksi Bunga", href: "/koleksi" },
                 { name: "Custom Bouquet", href: "/custom" },
                 { name: "Langganan", href: "/langganan" },
-                { name: "Cara Pemesanan", href: "/order" },
-                { name: "Hubungi Kami", href: "/kontak" },
+                { name: "Tentang Kami", href: "/tentang" },
+                { name: "FAQ", href: "/faq" },
+                { name: "Kontak", href: "/kontak" },
               ].map((link) => (
                 <li key={link.name}>
                   <Link
@@ -76,6 +90,7 @@ export default function Footer() {
                 { name: "Standing Flower", href: "/koleksi/standing-flower" },
                 { name: "Table Arrangement", href: "/koleksi/table-arrangement" },
                 { name: "Wedding Flowers", href: "/koleksi/wedding-flowers" },
+                { name: "Sympathy Flowers", href: "/koleksi/sympathy-flowers" },
               ].map((link) => (
                 <li key={link.name}>
                   <Link
@@ -132,7 +147,7 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/60">
-            <p>&copy; 2025 Bunga Segar Florist</p>
+            <p>&copy; 2025 Bunga Segar Florist. All rights reserved.</p>
             <p>
               Website ini dibuat dengan{" "}
               <span className="text-primary">❤️</span> oleh{" "}

@@ -3,19 +3,33 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Flower2, Phone } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Menu, X, Flower2, Phone, ChevronDown } from "lucide-react";
 
 const navigation = [
   { name: "Beranda", href: "/" },
-  { name: "Koleksi", href: "/koleksi" },
+  {
+    name: "Koleksi",
+    href: "/koleksi",
+    submenu: [
+      { name: "Semua Koleksi", href: "/koleksi" },
+      { name: "Bouquet", href: "/koleksi/bouquet" },
+      { name: "Flower Box", href: "/koleksi/flower-box" },
+      { name: "Standing Flower", href: "/koleksi/standing-flower" },
+      { name: "Table Arrangement", href: "/koleksi/table-arrangement" },
+      { name: "Wedding Flowers", href: "/koleksi/wedding-flowers" },
+      { name: "Sympathy Flowers", href: "/koleksi/sympathy-flowers" },
+    ]
+  },
   { name: "Custom Bouquet", href: "/custom" },
   { name: "Langganan", href: "/langganan" },
+  { name: "Tentang Kami", href: "/tentang" },
+  { name: "FAQ", href: "/faq" },
   { name: "Kontak", href: "/kontak" },
 ];
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
 
   return (
     <header className="sticky top-0 z-50 glass-effect border-b border-primary/10">
@@ -35,15 +49,38 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-6">
             {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="text-foreground/80 hover:text-primary transition-colors font-medium"
-              >
-                {item.name}
-              </Link>
+              <div key={item.name} className="relative group">
+                {'submenu' in item && item.submenu ? (
+                  <>
+                    <button className="flex items-center gap-1 text-foreground/80 hover:text-primary transition-colors font-medium py-2">
+                      {item.name}
+                      <ChevronDown className="h-4 w-4" />
+                    </button>
+                    <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                      <div className="bg-white rounded-xl shadow-xl border border-primary/10 py-2 min-w-[200px]">
+                        {item.submenu.map((subitem) => (
+                          <Link
+                            key={subitem.name}
+                            href={subitem.href}
+                            className="block px-4 py-2 text-foreground/80 hover:text-primary hover:bg-primary/5 transition-colors"
+                          >
+                            {subitem.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <Link
+                    href={item.href}
+                    className="text-foreground/80 hover:text-primary transition-colors font-medium"
+                  >
+                    {item.name}
+                  </Link>
+                )}
+              </div>
             ))}
           </div>
 
@@ -84,14 +121,50 @@ export default function Header() {
             >
               <div className="py-4 space-y-2">
                 {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    onClick={() => setIsOpen(false)}
-                    className="block px-4 py-3 text-foreground/80 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
-                  >
-                    {item.name}
-                  </Link>
+                  <div key={item.name}>
+                    {'submenu' in item && item.submenu ? (
+                      <>
+                        <button
+                          onClick={() => setOpenSubmenu(openSubmenu === item.name ? null : item.name)}
+                          className="w-full flex items-center justify-between px-4 py-3 text-foreground/80 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                        >
+                          {item.name}
+                          <ChevronDown className={`h-4 w-4 transition-transform ${openSubmenu === item.name ? 'rotate-180' : ''}`} />
+                        </button>
+                        <AnimatePresence>
+                          {openSubmenu === item.name && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: "auto" }}
+                              exit={{ opacity: 0, height: 0 }}
+                              className="overflow-hidden"
+                            >
+                              <div className="pl-6 space-y-1">
+                                {item.submenu.map((subitem) => (
+                                  <Link
+                                    key={subitem.name}
+                                    href={subitem.href}
+                                    onClick={() => setIsOpen(false)}
+                                    className="block px-4 py-2 text-foreground/70 hover:text-primary transition-colors text-sm"
+                                  >
+                                    {subitem.name}
+                                  </Link>
+                                ))}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </>
+                    ) : (
+                      <Link
+                        href={item.href}
+                        onClick={() => setIsOpen(false)}
+                        className="block px-4 py-3 text-foreground/80 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                      >
+                        {item.name}
+                      </Link>
+                    )}
+                  </div>
                 ))}
                 <div className="pt-4 px-4 space-y-3">
                   <a
